@@ -1,2 +1,2 @@
 // export const API = 'https://online-courses-ebon.vercel.app/'
-export const API = 'http://localhost:4678/'
+export const API = 'https://online-courses-hiim.vercel.app/'
