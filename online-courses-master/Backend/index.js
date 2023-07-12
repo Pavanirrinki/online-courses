@@ -1,3 +1,4 @@
+const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 const paymentRoutes = require("./Routes/Paymentroutes")
@@ -7,16 +8,7 @@ const courseRoutes = require("./Routes/Courseroutes")
 const bodyParser = require('body-parser');
 require("dotenv").config()
 
-
-
-const express = require('express');
-const app = express();
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://online-courses-mx2n.vercel.app');
-  next();
-});
-
+const app= express()
 
 
 
