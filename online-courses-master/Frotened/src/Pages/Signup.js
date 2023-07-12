@@ -21,12 +21,11 @@ axios.post(API+"signup", {
     password: password
   })
   .then(response => {
-    alert("successfully signup")
   setEmail("")
   setFirstname("")
   setLastname("")
   setPassword("")
-    navigate("/")
+    navigate("/login")
   })
   .catch(error => {
     console.error(error);

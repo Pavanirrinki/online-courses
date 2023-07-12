@@ -2,6 +2,7 @@ import React,{useState,useRef} from 'react'
 import axios from 'axios';
 import {API} from "../Api"
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 function Forgotpassword() {
   const [email,setEmail] = useState("")
   const [otp,setOtp] = useState()
@@ -15,13 +16,31 @@ function Forgotpassword() {
   email: email
     })
     .then(res => {
-      alert(res.data)
+      toast.success(`${res.data}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
  
     setToggle(!toggle) 
     })
     .catch(error => {
    
-      alert(error.response.data);
+      toast.error(`${error.response.data}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
      
     })
  
@@ -33,28 +52,45 @@ function Forgotpassword() {
   otprecived:otp
     })
     .then(res => {
-      alert(res.data)
-      setForgotpassword(!forgotpassword)
+      toast.success(`${res.data}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+        setTimeout(()=>{
+      setForgotpassword(!forgotpassword)},5000)
     })
     .catch(error => {
    
-      alert(error.response.data);
+      toast.error(`${error.response.data}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       console.log(typeof(otp))
-      setEmail("")
+     
     })
  
   }
 
-  function changepassword(){
-    axios.put(API+"forgot-password" ,{
+  async function changepassword(e){
+    e.preventDefault()
+   await axios.put(API+"forgot-password" ,{
       email: email,
       password
         })
-        .then(res => {
-          alert(res.data);
-    
-        })
-        navigate("/")
+        .then(res => navigate("/"))
+       
         .catch(error => {
        
           alert(error.response.data);

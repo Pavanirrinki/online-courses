@@ -38,7 +38,10 @@ const handleOutsideClick =() =>{
 const hidecategories =() =>{
   setIsHovered(false)
 }
-
+const Removeuser =()=>{
+  localStorage.removeItem("userdata")
+  navigate("/login")
+}
 
 
   return (
@@ -97,6 +100,7 @@ const hidecategories =() =>{
     <Link to='/signup'style={{textDecoration:"none",color:"black"}}>
     <li><a class="dropdown-item" href="#">SIGNUP</a></li>
     </Link>
+  
     <Link to='/posted-courses'style={{textDecoration:"none",color:"black"}}>
     <li><a class="dropdown-item" href="#">MY COURSES</a></li>
     </Link>
@@ -126,6 +130,7 @@ const hidecategories =() =>{
     <Link to='/cart'style={{textDecoration:"none"}}>
     <li><a class="dropdown-item" href="#">CART</a></li>
     </Link>
+    <li><a class="dropdown-item" href="#" onClick={Removeuser}>LOGOUT</a></li>
   </ul>
 </div>
           </ul>
@@ -143,6 +148,8 @@ const hidecategories =() =>{
           onClick={handleOutsideClick}
         />
       )}
+
+
     </div>
   );
 }

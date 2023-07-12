@@ -1,7 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
-
+const paymentRoutes = require("./Routes/Paymentroutes")
 const jwt = require("jsonwebtoken")
 const authRoutes = require('./Routes/userroutes');
 const courseRoutes = require("./Routes/Courseroutes")
@@ -20,6 +20,7 @@ app.use(cors({
 app.use(express.json());
 app.use('/', authRoutes);
 app.use("/",courseRoutes);
+app.use("/",paymentRoutes);
 
 
 const PORT = process.env.PORT||4040

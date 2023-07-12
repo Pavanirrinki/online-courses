@@ -206,34 +206,6 @@ const userpostedcourses = await Courses.find({createdBy:userId});
 })
 
 
-//Add purchased courses
-router.post('/add-purchased-course/:courseId',async(req,res)=>{
-  const {courseId} = req.params;
-  console.log(typeof courseId)
-  try{
-  const course = await Courses.findById(courseId)
- 
-if(course){
-  const purchasedcourse = await User.findOne({purchasedcourses:courseId})
-
-  if(!purchasedcourse){
-    const updatedCourse = await User.findOneAndUpdate(
-      purchasedcourse,
-      { $push: {purchasedcourses:courseId}},
-      { new: true }
-    );
-res.status(200).json({updatedCourse})
-  }else{
-    console.log("course already exixts")
-  }
-}else{
-  res.send("COURSE NOT FOUND")
-}
-  }catch(e){
-
-  }
-})
-
 
 
 //Get purchased courses
@@ -260,7 +232,7 @@ res.status(200).json({purchasedcourse})
 router.get('/items', async (req, res) => {
   try {
     const filters = req.query;
-
+console.log(filters,'1245')
     const query = {};
 if (filters.averagerating) {
       query.averagerating = parseInt(filters.averagerating);

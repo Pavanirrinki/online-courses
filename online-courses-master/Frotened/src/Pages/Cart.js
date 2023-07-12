@@ -2,12 +2,12 @@ import React, { useEffect,useState } from 'react'
 import image from "../Images/OIP.jpg"
 import axios from 'axios';
 import { API } from '../Api';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
+import { toast } from 'react-toastify'
 
 
 
-
-function Cart() {
+function Cart() { 
 
   const [data,setData] = useState([])
   const [toggle,setToggle] = useState(false)
@@ -37,11 +37,47 @@ axios.get(API+`purchase-courses/${userId}`).then(res=>setCoursedata(res.data))
  }
   }, [toggle]);
   
-function Removefromcart(id){
- axios.post(API+"remove-courses-in-cart",{email:userdata.existingUser.email,course_id:id}).then((res)=>setToggle(!toggle))
+function Removefromcart(id,name){
+ axios.post(API+"remove-courses-in-cart",{email:userdata.existingUser.email,course_id:id}).then((res)=>{
+  setToggle(!toggle);
+  toast.error(`${name} Removed to cart`, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    })})
  
 }
 console.log("dataaaaaaaaaaaa",data)
+const Handlepayments=async ()=>{
+  const  cartItems1 = data.products;
+  const cartItems =await cartItems1.filter((element) => !data.userdata.purchasedcourses.includes(element._id));
+
+if(cartItems.length >=1){
+axios.post(API+"create-checkout-session", {
+  cartItems,userId}).then(async (res)=>{
+    if(res.data.url){
+ window.location.href = await (res.data.url)
+   
+ }
+  }).catch(error=>console.log(error.message))
+}else{
+  toast.error('Already purchased', {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    });
+}
+}
   return (
     <div>
    
@@ -96,7 +132,7 @@ console.log("dataaaaaaaaaaaa",data)
     {data?.products?.length >=1 ? data.products?.map((course,index)=>(
               <div className="card mb-5">
                 <button type="button" className="close" aria-label="Close">
-                  <span aria-hidden="true" onClick={()=>Removefromcart(course._id)}>&times;</span>
+                  <span aria-hidden="true" onClick={()=>Removefromcart(course._id,course.name)}>&times;</span>
                 </button>
                 <div className="row no-gutters">
                   <div className="col-md-3 display-block">
@@ -155,7 +191,8 @@ console.log("dataaaaaaaaaaaa",data)
 
 
                 </div>
-                <button style={{ position: "relative", width: "100%", marginTop: "20px", border: "none", borderRadius: "5px", padding: "5px 0px 5px 0px" }} className='bg-danger text-white'>Checkout</button>
+                <button style={{ position: "relative", width: "100%", marginTop: "20px", border: "none", borderRadius: "5px", padding: "5px 0px 5px 0px" }} className='bg-danger text-white'
+                 onClick={()=>Handlepayments()}>Checkout</button>
               </div>
             </div>
           </div>

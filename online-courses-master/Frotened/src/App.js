@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import Cart from './Pages/Cart';
 import Coursedetailpage from './Pages/Coursedetailpage';
@@ -16,14 +16,17 @@ import Exploreallcourses from './Pages/Exploreallcourses';
 import Mycourses from './Components/Mycourses';
 import Updatedcourse from './Pages/Updatedcourse';
 import Particularcourse from './Pages/Particularcourse';
-
-
+import Sucess from './Components/Sucess';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
   
   function App() {
+  
   return (
     <BrowserRouter>
     <ScrollToTop />
+    <ToastContainer />
     <Navbar />
     <Routes>
       <Route exact path="/" element={<Homepage />} />  
@@ -39,7 +42,9 @@ import Particularcourse from './Pages/Particularcourse';
       <Route exact path="/posted-courses" element={<Mycourses />} />
       <Route exact path="/:id/update-course" element={<Updatedcourse />} />
       <Route exact path="/particular-course/:userId" element={<Particularcourse />} />
-    </Routes>
+      <Route exact path='/success' element={<Sucess/>} />
+    
+    </Routes>  
   </BrowserRouter>
   
   );

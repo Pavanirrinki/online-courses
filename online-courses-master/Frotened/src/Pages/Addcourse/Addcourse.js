@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AiOutlinePlus, AiFillCamera } from 'react-icons/ai';
 import './Addcourse.css';
 import axios from 'axios';
 import { API } from '../../Api';
-import { useLocation,useParams } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+
+import { toast } from 'react-toastify'
 function Addcourse() {
-  const {id} = useParams()
+ 
   const userdata = JSON.parse(localStorage.getItem('userdata')); 
   const [components, setComponents] = useState([{ id: 1, video: '', overview: '' }]);
-  const [updatedcourse,setUpdatedcourse] = useState(null)
+
    const [image, setImage] = useState("");
    const [coursecategory, setCoursecategory] = useState("");
   const [courserequirements, setCourserequirements] = useState('');
@@ -17,13 +20,12 @@ function Addcourse() {
   const [description, setDescription] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   const [courseprice, setCourseprice] = useState();
-  const location = useLocation()
-  console.log("location",location)
+ const [pavan,setPavan] = useState(false)
   const addComponent = () => {
     setComponents([...components, { id: components.length + 1, video: '', overview: '' }]);
   };
 
-console.log(updatedcourse)
+
   const handleInputChange = (event, index) => {
     const { name, value } = event.target;
     const updatedComponents = [...components];
@@ -35,7 +37,24 @@ console.log(updatedcourse)
   const createForm = async (e) => {
     e.preventDefault();
 //CREATE COURSE 
+if(image == ''|| coursecategory == ''|| courserequirements == ''||  selectedTime == ''|| 
+name== ''|| description == ''||  selectedValue== ''||  courseprice == '' || 
+components[components.length-1].overview == '' || components[components.length-1].video == ''){
+  toast.error(`Please fill all required fields`, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    });
+ 
+}
 
+else{
+  setPavan(true)
     const formDataArray = [];
     for (const component of components) {
       const formData = new FormData();
@@ -86,11 +105,36 @@ console.log(updatedcourse)
       author: "Programming",
       requirements: courserequirements,
     }
- 
-   await axios.post(API + "add-course", data).then((data) => console.log(data));
-    console.log('Data:', data);
+  
 
-}
+await axios.post(API + "add-course", data).then((data) =>{ 
+    console.log(data);
+    setPavan(false)
+    toast.success(`Course added suceessfully`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });}).catch((error)=>{
+        toast.error(`${error.message} please try again`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+        setPavan(false)
+      })
+    }
+  
+  }
   return (
     <>
      {userdata ?
@@ -225,15 +269,30 @@ console.log(updatedcourse)
                         onChange={(e) => setSelectedTime(e.target.value)} />
                     </div>
 
-                    <div className="text-center mt-5">
+                {!pavan ?  <div className="text-center mt-5">
                       <button
                         type="submit"
-                        className="btn btn-primary btn-block btn-lg"
+                        className="btn btn-primary btn-block btn-lg bg-danger"
                         onClick={createForm}
                       >
                         Upload Course
                       </button>
-                    </div>
+                    </div>:
+                    <>
+                    <div className="text-center mt-5">
+ <Button variant="primary"   className="btn btn-primary btn-block btn-lg">
+   <Spinner
+     as="span"
+     animation="border"
+   
+     size="sm"
+     role="status"
+     aria-hidden="true"
+   />
+   Uploading...
+ </Button>
+ </div>
+ </>}
                   </form>
                 </div>
           </div>

@@ -7,14 +7,16 @@ function Mycourses() {
   const [postedcourses,setPostedcourses] = useState(null)
   const userdata = JSON.parse(localStorage.getItem('userdata'));
   useEffect(()=>{
+    if(userdata){
 axios.get(API+`${userdata.existingUser._id}/posted-courses`).
 then(res=>setPostedcourses(res.data))
+    }
   },[])
  
   return (
     <div>
    <h6 style={{ marginTop: "20px", marginLeft: "30px" }}>Posted Courses</h6>
-    {postedcourses && postedcourses?.userpostedcourses?.map((course)=>(
+    {!postedcourses?.length == 0 ? postedcourses?.userpostedcourses?.map((course)=>(
       <Link to={`/${course._id}/update-course`} style={{textDecoration:"none"}}>
           <div class="container ">
               <div class="row">
@@ -52,8 +54,8 @@ then(res=>setPostedcourses(res.data))
                  
                 </div>
               </div>
-            </div></Link>))}      
-    {!postedcourses && <p>kkkkkkkkkk</p>}
+            </div></Link>)):<h1 style={{textAlign:"center",color:"blue",fontWeight:"bold"}}>No Courses You Posted</h1>}      
+ 
     
    
         </div>

@@ -11,7 +11,7 @@ import "../App.css"
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 import { API } from '../Api';
-
+import { toast } from 'react-toastify'
 function Coursedetailpage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -40,9 +40,29 @@ function Coursedetailpage() {
           'Content-Type': 'application/json'
         }
       })
-        .then(res => console.log("data1234", res.data))
+        .then(res => {
+          console.log("data1234", res.data);
+          toast.success(`${data.name} added to cart`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });})
         .catch(error => {
-          console.error('Error adding courses to cart:', error);
+          toast.error(`${error.response.data}`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
         });
     } else {
       navigate("/login")

@@ -123,7 +123,7 @@ router.post('/sendotp', async (req, res) => {
                       delete savedOTPS.email
                   }, 60000
               )
-              res.send("sent otp")
+              res.send("SEND OTP SUCCESSFULLY")
           }
 
       }
@@ -139,7 +139,7 @@ const {email,otprecived} = req.body;
 console.log(email,otprecived)
  console.log(savedOTPS)
   if (savedOTPS[email] == otprecived) {
-      res.send("Verfied");
+      res.send("VERIFIED OTP");
   }
   else {
       res.status(500).send("Invalid OTP")
