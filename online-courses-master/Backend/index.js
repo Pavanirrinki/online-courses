@@ -1,4 +1,3 @@
-const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 const paymentRoutes = require("./Routes/Paymentroutes")
@@ -8,7 +7,16 @@ const courseRoutes = require("./Routes/Courseroutes")
 const bodyParser = require('body-parser');
 require("dotenv").config()
 
-const app= express()
+
+
+const express = require('express');
+const app = express();
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://online-courses-mx2n.vercel.app');
+  next();
+});
+
 
 
 
@@ -17,7 +25,7 @@ mongoose.connect(process.env.MONGO_URI,{useNewUrlParser:true,useUnifiedTopology:
 (()=>console.log("DB CONNECTED8"))
 
 app.use(cors({
-    origin:"https://online-courses-mx2n.vercel.app"
+    origin:"*"
 }))
 
   
