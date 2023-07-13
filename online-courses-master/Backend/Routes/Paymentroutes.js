@@ -2,10 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Courses = require("../models/courses")
 const User = require('../models/users');
-
+const cors = require('cors')
 const middleware = require("../Middleware/Middleware");
 require("dotenv").config()
 const stripe = require('stripe')(process.env.STRIPE_KEY)
+
+app.use(cors({
+  origin:"*"
+}))
+
 
 router.post('/create-checkout-session', async (req, res) => {
   const porductId = req.body.cartItems?.map((_id)=>(_id._id));
