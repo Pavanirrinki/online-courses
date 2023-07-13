@@ -10,20 +10,20 @@ const stripe = require('stripe')(process.env.STRIPE_KEY)
 app.use(cors({
   origin:"*"
 }))
-// router.post('/create-webhook-endpoint', async (req, res) => {
-//   try {
-//     const endpoint = await stripe.webhookEndpoints.create({
-//       url: `${process.env.CLIENT_URL}/webhook`,
-//       enabled_events: [
+router.post('/create-webhook-endpoint', async (req, res) => {
+  try {
+    const endpoint = await stripe.webhookEndpoints.create({
+      url: `${process.env.CLIENT_URL}/webhook`,
+      enabled_events: [
         
-//         'checkout.session.completed',
-//        ],
-//     });
-//     res.json(endpoint);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Failed to create webhook endpoint');
-//   }
+        'checkout.session.completed',
+       ],
+    });
+    res.json(endpoint);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Failed to create webhook endpoint');
+  }
 // });
 
 router.post('/create-checkout-session', async (req, res) => {
