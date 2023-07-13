@@ -7,7 +7,7 @@ const middleware = require("../Middleware/Middleware");
 require("dotenv").config()
 const stripe = require('stripe')(process.env.STRIPE_KEY)
 
-app.use(cors({
+router.use(cors({
   origin:"*"
 }))
 router.post('/create-webhook-endpoint', async (req, res) => {
