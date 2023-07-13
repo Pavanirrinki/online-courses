@@ -10,7 +10,21 @@ const stripe = require('stripe')(process.env.STRIPE_KEY)
 app.use(cors({
   origin:"*"
 }))
-
+router.post('/create-webhook-endpoint', async (req, res) => {
+  try {
+    const endpoint = await stripe.webhookEndpoints.create({
+      url: 'https://online-courses-swart.vercel.app/webhook',
+      enabled_events: [
+        
+        'checkout.session.completed',
+       ],
+    });
+    res.json(endpoint);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Failed to create webhook endpoint');
+  }
+});
 
 router.post('/create-checkout-session', async (req, res) => {
   const porductId = req.body.cartItems?.map((_id)=>(_id._id));
