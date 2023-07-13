@@ -13,7 +13,7 @@ app.use(cors({
 router.post('/create-webhook-endpoint', async (req, res) => {
   try {
     const endpoint = await stripe.webhookEndpoints.create({
-      url: 'https://online-courses-swart.vercel.app/webhook',
+      url: `${process.env.CLIENT_URL}/webhook`,
       enabled_events: [
         
         'checkout.session.completed',
