@@ -24,7 +24,7 @@ router.post('/create-webhook-endpoint', async (req, res) => {
     console.error(error);
     res.status(500).send('Failed to create webhook endpoint');
   }
-// });
+});
 
 router.post('/create-checkout-session', async (req, res) => {
   const porductId = req.body.cartItems?.map((_id)=>(_id._id));
