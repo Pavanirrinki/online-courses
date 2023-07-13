@@ -36,8 +36,8 @@ router.post('/create-checkout-session', async (req, res) => {
     customer:customer.id,
     line_items,
     mode: 'payment',
-    success_url: 'http://localhost:3004/success',
-    cancel_url: 'http://localhost:3004/cart',
+    success_url: `${process.env.CLIENT_URL}/success`,
+    cancel_url: `${process.env.CLIENT_URL}/cart`,
   });
   if(!session.payment_status == 'unpaid'){
   console.log('Data logged after clicking "Pay":');
