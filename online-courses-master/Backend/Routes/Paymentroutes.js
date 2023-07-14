@@ -59,7 +59,10 @@ router.post('/create-checkout-session', async (req, res) => {
 
 let endpointSecret;
 
- endpointSecret = "whsec_94fe956968b8b778ee6f67fbb0fcdcc61d5532e07878ac778b12d68188e7c54a";
+ endpointSecret = "whsec_iFuu9MY6DdlB7xbqfm83jUmVs5C7oMGw";
+
+
+ 
 
 router.post('/webhook', express.raw({type: 'application/json'}),async (request, response) => {
  
