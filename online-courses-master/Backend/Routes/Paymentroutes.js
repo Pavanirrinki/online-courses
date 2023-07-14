@@ -59,7 +59,7 @@ router.post('/create-checkout-session', async (req, res) => {
 
 let endpointSecret;
 
- endpointSecret = "whsec_rmKe27ktOBaBcHhDILv0wbZZ8edYZ927";
+ endpointSecret = "whsec_iFuu9MY6DdlB7xbqfm83jUmVs5C7oMGw";
  
 
  
