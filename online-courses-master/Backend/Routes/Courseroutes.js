@@ -17,16 +17,7 @@ router.get("/all-courses", async (req, res) => {
   
 
 
-  router.get("/my-all-courses", async (req, res) => {
-    try {
-      const courses = await Courses.find({});
-      res.status(200).json({ courses });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send("Internal server error");
-    }
-  });
-
+ 
 
 
 
