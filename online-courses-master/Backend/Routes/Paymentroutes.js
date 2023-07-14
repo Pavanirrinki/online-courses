@@ -38,7 +38,7 @@ router.post('/create-checkout-session', async (req, res) => {
     }
     })
   const session = await stripe.checkout.sessions.create({
-    customer:customer.id,
+    customer:JSON.parse(customer.id),
     line_items,
     mode: 'payment',
     success_url: `${process.env.CLIENT_URL}/success`,
@@ -59,7 +59,7 @@ router.post('/create-checkout-session', async (req, res) => {
 
 let endpointSecret;
 
- endpointSecret = "whsec_iFuu9MY6DdlB7xbqfm83jUmVs5C7oMGw";
+//  endpointSecret = "whsec_iFuu9MY6DdlB7xbqfm83jUmVs5C7oMGw";
  
 
  
