@@ -4,12 +4,14 @@ import axios from 'axios';
 import { API } from '../Api';
 import { Link} from 'react-router-dom';
 import { toast } from 'react-toastify'
+import { AiOutlineSearch } from 'react-icons/ai';
 
 
 
 function Cart() { 
 
   const [data,setData] = useState([])
+ 
   const [toggle,setToggle] = useState(false)
   const userdata = JSON.parse(localStorage.getItem('userdata'));
 
@@ -53,30 +55,59 @@ function Removefromcart(id,name){
  
 }
 console.log("dataaaaaaaaaaaa",data)
-const Handlepayments=async ()=>{
+const Handlepayments=async (cartpricedata,products)=>{
+const order_courses = []
+ products.map((data)=>order_courses.push(data._id))
+ 
   const  cartItems1 = data.products;
-  const cartItems =await cartItems1.filter((element) => !data.userdata.purchasedcourses.includes(element._id));
+  const cartItems =await cartItems1?.filter((element) => !data.userdata.purchasedcourses.includes(element._id));
+console.log("cartpricedata",products)
 
-if(cartItems.length >=1){
-axios.post(API+"create-checkout-session", {
-  cartItems,userId}).then(async (res)=>{
-    if(res.data.url){
- window.location.href = await (res.data.url)
-   
- }
-  }).catch(error=>console.log(error.message))
-}else{
-  toast.error('Already purchased', {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    });
-}
+
+var purchasedCoursesData = JSON.stringify(order_courses);
+console.log(purchasedCoursesData,'lllllllllllllllllllll')
+
+
+const { data: { order } } = await axios.post(API + "check-out", { cartItems, userId,cartpricedata })
+ 
+
+var options = {
+  key: "rzp_test_JWyrTqAqINhszJ",
+  amount: Number(cartpricedata* 100),
+  currency: "INR",
+  name: "Acme Corp",
+  image: "https://thewowstyle.com/wp-content/uploads/2015/01/nature-images..jpg",
+  order_id: order.id,
+  description: "Tutorial of RazorPay",
+  callback_url: API + "paymentverification",
+  prefill: {
+    name: "Gaurav Kumar",
+    email: "gaurav.kumar@example.com",
+    contact: "9000090000",
+    address: "Razorpay Corporate Office",
+    totalPrice: "13000",
+    quantity: "9"
+  },
+  notes: {
+    "address": "Razorpay Corporate Office",
+    "purchasedcourses" :  purchasedCoursesData,
+     "userId":JSON.stringify(userId)
+ 
+},
+  theme: {
+    color: "#3399cc"
+  }
+};
+
+
+var rzp1 = new window.Razorpay(options);
+
+
+rzp1.open();
+
+
+
+
 }
   return (
     <div>
@@ -192,7 +223,7 @@ axios.post(API+"create-checkout-session", {
 
                 </div>
                 <button style={{ position: "relative", width: "100%", marginTop: "20px", border: "none", borderRadius: "5px", padding: "5px 0px 5px 0px" }} className='bg-danger text-white'
-                 onClick={()=>Handlepayments()}>Checkout</button>
+                 onClick={()=>Handlepayments(data?.userdata?.cartprice,data.products)}>Checkout</button>
               </div>
             </div>
           </div>

@@ -2,14 +2,17 @@ const express = require('express');
 const router = express.Router();
 const Courses = require("../models/courses")
 const User = require('../models/users');
+const getRawBody = require('raw-body')
 const cors = require('cors')
 const middleware = require("../Middleware/Middleware");
+const bodyParser = require('body-parser');
 require("dotenv").config()
-const stripe = require('stripe')(process.env.STRIPE_KEY)
+const stripe = require('stripe')("sk_test_51NQbWnSBJpcTwFBa9NUDXBWFBfcHCOJaJO4WwSxLR2c3PxjRJQyE4Y3Q0zOYWZIvX0H30oHfiQweHRs8YFZWSGa000pY12nGER")
 
 router.use(cors({
   origin:"*"
 }))
+router.use(bodyParser.json());
 
 
 router.post('/create-checkout-session', async (req, res) => {
@@ -57,22 +60,20 @@ router.post('/create-checkout-session', async (req, res) => {
 
 //webhook authentification
 
-let endpointSecret;
 
- endpointSecret = "whsec_JV24VaWyXfSZfsZhWUKuOsFoyFLddPRJ";
 
 router.post('/webhook', express.raw({type: 'application/json'}),async (request, response) => {
- 
-     const user = await User.findOne({ _id: stripe.customers.metadata.userId });
-    
+
   const sig = request.headers['stripe-signature'];
+  let endpointSecret;
+    endpointSecret = "whsec_sD4FtnqU8HbYvFa6w6M0nr5U2U0ncDfI";
   let data;
   let eventType;
 if(endpointSecret){
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(request.body,sig,endpointSecret);
   } catch (err) {
     response.status(400).send(`Webhook Error: ${err.message}`);
     return;
@@ -105,6 +106,11 @@ if(eventType === "checkout.session.completed"){
  
   response.send().end();
 });
+
+
+
+
+
 
 
 

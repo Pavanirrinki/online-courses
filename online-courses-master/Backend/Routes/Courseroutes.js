@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Courses = require("../models/courses")
 const User = require('../models/users');
-
+const cors = require("cors")
 const middleware = require("../Middleware/Middleware");
+
 
 router.get("/all-courses", async (req, res) => {
     try {
